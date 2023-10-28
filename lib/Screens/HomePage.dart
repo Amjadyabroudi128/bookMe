@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:bookme/Screens/Services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String value = "";
+  String price = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +30,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 18,),
                 Container(
+                  padding: EdgeInsets.all(5),
                   alignment: Alignment.topLeft,
                   child: Text.rich(
                     TextSpan(
@@ -67,7 +73,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: MaterialButton(
                                 child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                                onPressed: (){},
+                                onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(builder: (context) =>  Services(value: 'Haircut', price: 16,)),
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -89,7 +100,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: MaterialButton(
                                 child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                                onPressed: (){},
+                                onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(builder: (context) =>  Services(value: 'Beard Trim', price: 8,)),
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -118,7 +134,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: MaterialButton(
                                 child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                                onPressed: (){},
+                                onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(builder: (context) =>  Services(value: 'Hot Towel', price: 3,)),
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -140,7 +161,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: MaterialButton(
                                 child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                                onPressed: (){},
+                                onPressed: (){
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(builder: (context) =>  Services(value: 'Nose and ear wax', price: 5,)),
+                                  );
+                                },
                               ),
                             ),
                           ),
