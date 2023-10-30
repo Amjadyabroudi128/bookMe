@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class Services extends StatefulWidget {
 final String value;
 final int price;
@@ -66,7 +67,9 @@ class _HairCutsState extends State<Services> {
                       child: TextField(
                         decoration:  InputDecoration(
                             labelText: "Name",
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)
+                          ),
                         ),
                       ),
                     ),
@@ -93,7 +96,9 @@ class _HairCutsState extends State<Services> {
                       child: TextField(
                         decoration:  InputDecoration(
                           labelText: "time",
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)
+                          ),
                         ),
                       ),
                     ),
@@ -135,7 +140,9 @@ class _HairCutsState extends State<Services> {
                         ),
                         child: MaterialButton(
                           child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                          onPressed: () {},
+                          onPressed: () {
+
+                          },
                         ),
                       ),
                     ),
