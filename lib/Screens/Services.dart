@@ -1,3 +1,4 @@
+import 'package:bookme/Screens/allBooked.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -20,12 +21,16 @@ final int price;
 
 class _HairCutsState extends State<Services> {
   DateTime today = DateTime.now();
-  void _onDaySelected( DateTime day, DateTime focusDay){
+  void _onDaySelected( DateTime day, DateTime focusDay) {
     setState(() {
-      today = day;
+      today = focusDay;
     });
   }
+
   String name = "";
+  String comment ="";
+  TextEditingController emailController = TextEditingController();
+  final dataBase = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,12 +44,13 @@ class _HairCutsState extends State<Services> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 35,),
               Container(
                 child: TableCalendar(
                   calendarStyle: CalendarStyle(
                     selectedDecoration: BoxDecoration(
-                      color: Colors.teal,
-                      shape: BoxShape.circle
+                        color: Colors.teal,
+                        shape: BoxShape.circle
                     ),
                   ),
                   rowHeight: 35,
@@ -52,7 +58,7 @@ class _HairCutsState extends State<Services> {
                   availableGestures: AvailableGestures.all,
                   selectedDayPredicate: (day) => isSameDay(day, today),
                   focusedDay: today,
-                  firstDay: DateTime(2023),
+                  firstDay: DateTime.now(),
                   lastDay: DateTime.utc(2030, 3, 10),
                   onDaySelected: _onDaySelected,
                 ),
@@ -71,6 +77,9 @@ class _HairCutsState extends State<Services> {
                               borderRadius: BorderRadius.circular(12)
                           ),
                         ),
+                        onChanged: (value ){
+                          name = value;
+                        },
                       ),
                     ),
                     SizedBox(width: 20,),
@@ -82,6 +91,9 @@ class _HairCutsState extends State<Services> {
                             borderRadius: BorderRadius.circular(12)
                           ),
                         ),
+                        onChanged: (value ){
+                          emailController.text = value;
+                        },
                       ),
                     ),
                   ],
@@ -92,20 +104,9 @@ class _HairCutsState extends State<Services> {
                 padding: EdgeInsets.all(12),
                 child: Row(
                   children: <Widget>[
-                    Flexible(
-                      child: TextField(
-                        decoration:  InputDecoration(
-                          labelText: "time",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                        ),
-                      ),
-                    ),
                     SizedBox(width: 20,),
                     Flexible(
                       child:  TextField(
-
                         decoration:  InputDecoration(
                           labelText: "add comment",
                           prefixIcon: Icon(Icons.comment, color: Colors.grey,),
@@ -113,6 +114,9 @@ class _HairCutsState extends State<Services> {
                               borderRadius: BorderRadius.circular(12)
                           ),
                         ),
+                        onChanged: (value ){
+                          comment = value;
+                        },
                       ),
                     ),
                   ],
@@ -140,8 +144,21 @@ class _HairCutsState extends State<Services> {
                         ),
                         child: MaterialButton(
                           child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                          onPressed: () {
-
+                          onPressed: () async {
+                            await dataBase.collection("Services").doc().set(
+                              {
+                                "service": widget.value,
+                                "price": ("£${widget.price}"),
+                                "date": today,
+                                "name": name,
+                                "comment": comment,
+                              }
+                            );
+                            print('things submitted');
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (context) => const allBooked()),
+                            );
                           },
                         ),
                       ),
