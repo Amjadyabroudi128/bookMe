@@ -70,15 +70,15 @@ class _HairCutsState extends State<Services> {
                   Text("${time.hour}:${time.minute}", style: TextStyle(fontSize: 30),),
                   Spacer(),
                   IconButton(
-                    icon: Icon(Icons.lock_clock, size: 40,),
-                    onPressed: ()async{
-                      TimeOfDay? newTime = await
-                      showTimePicker(context: context,
-                          initialTime: time);
-                      if(newTime == null) return;
-                      setState (()=> time = newTime);
-                    },
-                  ),
+                      onPressed: ()async{
+                        TimeOfDay? newTime = await
+                        showTimePicker(context: context,
+                            initialTime: time);
+                        if(newTime == null) return;
+                        setState (()=> time = newTime);
+                      },
+                      icon: Icon(Icons.access_time_outlined, size: 40,)),
+
                 ],
               ),
 
