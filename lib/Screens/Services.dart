@@ -20,7 +20,7 @@ final int price;
 }
 
 class _HairCutsState extends State<Services> {
-  DateTime today = DateTime.now();
+  DateTime today = DateTime.now().toLocal();
   void _onDaySelected( DateTime day, DateTime focusDay) {
     setState(() {
       today = focusDay;
@@ -61,6 +61,7 @@ class _HairCutsState extends State<Services> {
                   firstDay: DateTime.now(),
                   lastDay: DateTime.utc(2030, 3, 10),
                   onDaySelected: _onDaySelected,
+
                 ),
               ),
               Divider(thickness: 0.5, color: Colors.grey,),
@@ -149,7 +150,7 @@ class _HairCutsState extends State<Services> {
                               {
                                 "service": widget.value,
                                 "price": ("£${widget.price}"),
-                                "date": today,
+                                "date": FieldValue.serverTimestamp(),
                                 "name": name,
                                 "comment": comment,
                               }
