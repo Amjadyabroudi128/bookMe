@@ -20,7 +20,7 @@ final int price;
 }
 
 class _HairCutsState extends State<Services> {
-  DateTime today = DateTime.now().toLocal();
+  DateTime today = DateTime.now();
   void _onDaySelected( DateTime day, DateTime focusDay) {
     setState(() {
       today = focusDay;
@@ -30,6 +30,7 @@ class _HairCutsState extends State<Services> {
   TextEditingController emailController = TextEditingController();
   TextEditingController commentController = TextEditingController();
   final dataBase = FirebaseFirestore.instance;
+  TimeOfDay time = TimeOfDay(hour: 12, minute: 12);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,13 +59,30 @@ class _HairCutsState extends State<Services> {
                   selectedDayPredicate: (day) => isSameDay(day, today),
                   focusedDay: today,
                   firstDay: DateTime.now(),
-                  lastDay: DateTime.utc(2030, 3, 10),
+                  lastDay: DateTime.utc(2030, 3, 10, 4, 3, 12).toLocal(),
                   onDaySelected: _onDaySelected,
-
                 ),
               ),
               Divider(thickness: 0.5, color: Colors.grey,),
               SizedBox(height: 20,),
+              Row(
+                children: [
+                  Text("${time.hour}:${time.minute}", style: TextStyle(fontSize: 30),),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.lock_clock, size: 40,),
+                    onPressed: ()async{
+                      TimeOfDay? newTime = await
+                      showTimePicker(context: context,
+                          initialTime: time);
+                      if(newTime == null) return;
+                      setState (()=> time = newTime);
+                    },
+                  ),
+                ],
+              ),
+
+
               Padding(
                 padding: EdgeInsets.all(12),
                 child: Row(
@@ -153,9 +171,10 @@ class _HairCutsState extends State<Services> {
                               {
                                 "service": widget.value,
                                 "price": ("£${widget.price}"),
-                                "date": today,
+                                "date": DateTime.utc(2030, 1, 3,).toLocal(),
                                 "name": nameController.text,
                                 "comment": commentController.text,
+                                "time": ("${time.hour}: ${time.minute}"),
                               }
                             );
                             print('things submitted');
