@@ -26,10 +26,9 @@ class _HairCutsState extends State<Services> {
       today = focusDay;
     });
   }
-
-  String name = "";
-  String comment ="";
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController commentController = TextEditingController();
   final dataBase = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -72,6 +71,7 @@ class _HairCutsState extends State<Services> {
                   children: <Widget>[
                      Flexible(
                       child: TextField(
+                        controller: nameController,
                         decoration:  InputDecoration(
                             labelText: "Name",
                           border: OutlineInputBorder(
@@ -79,13 +79,14 @@ class _HairCutsState extends State<Services> {
                           ),
                         ),
                         onChanged: (value ){
-                          name = value;
+                          nameController.text = value;
                         },
                       ),
                     ),
                     SizedBox(width: 20,),
                     Flexible(
                       child:  TextField(
+                        controller: emailController,
                         decoration:  InputDecoration(
                             labelText: "email",
                           border: OutlineInputBorder(
@@ -108,6 +109,7 @@ class _HairCutsState extends State<Services> {
                     SizedBox(width: 20,),
                     Flexible(
                       child:  TextField(
+                        controller: commentController,
                         decoration:  InputDecoration(
                           labelText: "add comment",
                           prefixIcon: Icon(Icons.comment, color: Colors.grey,),
@@ -116,8 +118,9 @@ class _HairCutsState extends State<Services> {
                           ),
                         ),
                         onChanged: (value ){
-                          comment = value;
+                          commentController.text = value;
                         },
+
                       ),
                     ),
                   ],
@@ -150,16 +153,18 @@ class _HairCutsState extends State<Services> {
                               {
                                 "service": widget.value,
                                 "price": ("£${widget.price}"),
-                                "date": FieldValue.serverTimestamp(),
-                                "name": name,
-                                "comment": comment,
+                                "date": today,
+                                "name": nameController.text,
+                                "comment": commentController.text,
                               }
                             );
                             print('things submitted');
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(builder: (context) => const allBooked()),
-                            );
+                            clearText();
+
+                            // Navigator.push(
+                            //   context,
+                            //   CupertinoPageRoute(builder: (context) => const allBooked()),
+                            // );
                           },
                         ),
                       ),
@@ -172,5 +177,10 @@ class _HairCutsState extends State<Services> {
         ),
       ),
     );
+  }
+  void clearText(){
+    nameController.clear();
+    emailController.clear();
+    commentController.clear();
   }
 }
