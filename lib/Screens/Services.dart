@@ -59,30 +59,33 @@ class _HairCutsState extends State<Services> {
                   selectedDayPredicate: (day) => isSameDay(day, today),
                   focusedDay: today,
                   firstDay: DateTime.now(),
-                  lastDay: DateTime.utc(2030, 3, 10, 4, 3, 12).toLocal(),
+                  lastDay: DateTime.utc(2030, 3, 10),
                   onDaySelected: _onDaySelected,
                 ),
               ),
               Divider(thickness: 0.5, color: Colors.grey,),
               SizedBox(height: 20,),
-              Row(
-                children: [
-                  Text("${time.hour}:${time.minute}", style: TextStyle(fontSize: 30),),
-                  Spacer(),
-                  IconButton(
-                      onPressed: ()async{
-                        TimeOfDay? newTime = await
-                        showTimePicker(context: context,
-                            initialTime: time);
-                        if(newTime == null) return;
-                        setState (()=> time = newTime);
-                      },
-                      icon: Icon(Icons.access_time_outlined, size: 40,)),
-
-                ],
+              GestureDetector(
+                onTap: () async {
+                  TimeOfDay? newTime = await showTimePicker(
+                      context: context,
+                      initialTime: time);
+                  if(newTime == null) return;
+                  setState(() => time = newTime);
+                },
+                child: Container(
+                  color: Colors.grey,
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: [
+                      Text("${time.hour}: ${time.minute}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                      Spacer(),
+                      Icon(Icons.access_time_outlined, size: 40,)
+                    ],
+                  ),
+                ),
               ),
-
-
               Padding(
                 padding: EdgeInsets.all(12),
                 child: Row(
@@ -171,7 +174,7 @@ class _HairCutsState extends State<Services> {
                               {
                                 "service": widget.value,
                                 "price": ("£${widget.price}"),
-                                "date": DateTime.utc(2030, 1, 3,).toLocal(),
+                                "date": today,
                                 "name": nameController.text,
                                 "comment": commentController.text,
                                 "time": ("${time.hour}: ${time.minute}"),
@@ -180,10 +183,10 @@ class _HairCutsState extends State<Services> {
                             print('things submitted');
                             clearText();
 
-                            // Navigator.push(
-                            //   context,
-                            //   CupertinoPageRoute(builder: (context) => const allBooked()),
-                            // );
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(builder: (context) => const allBooked()),
+                            );
                           },
                         ),
                       ),
