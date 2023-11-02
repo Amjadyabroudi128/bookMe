@@ -1,4 +1,5 @@
 import 'package:bookme/Screens/SplashScreen.dart';
+import 'package:bookme/Screens/allBooked.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
