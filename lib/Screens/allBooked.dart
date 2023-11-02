@@ -17,8 +17,10 @@ class allBooked extends StatelessWidget {
               Icons.check_circle_outline, size: 40,
             ),
             SizedBox(height: 30,),
-            Text("You are all booked, see you soon!",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.cyan),)
+            Center(
+              child: Text("You are all booked, see you soon!",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.cyan),),
+            )
           ],
         ) ,
       ),
