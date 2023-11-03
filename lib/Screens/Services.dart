@@ -1,3 +1,4 @@
+
 import 'package:bookme/Screens/allBooked.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -169,24 +170,25 @@ class _HairCutsState extends State<Services> {
                         ),
                         child: MaterialButton(
                           child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                          onPressed: () async {
-                            await dataBase.collection("Services").doc().set(
-                              {
-                                "service": widget.value,
-                                "price": ("£${widget.price}"),
-                                "date": today,
-                                "name": nameController.text,
-                                "comment": commentController.text,
-                                "time": ("${time.hour}: ${time.minute}"),
-                              }
-                            );
-                            print('things submitted');
-                            clearText();
-
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(builder: (context) => const allBooked()),
-                            );
+                           onPressed: () async {
+                            await _showMyDialog();
+                            // await dataBase.collection("Services").doc().set(
+                            //   {
+                            //     "service": widget.value,
+                            //     "price": ("£${widget.price}"),
+                            //     "date": today,
+                            //     "name": nameController.text,
+                            //     "comment": commentController.text,
+                            //     "time": ("${time.hour}: ${time.minute}"),
+                            //   }
+                            // );
+                            // print('things submitted');
+                            // clearText();
+                            //
+                            // Navigator.push(
+                            //   context,
+                            //   CupertinoPageRoute(builder: (context) => const allBooked()),
+                            // );
                           },
                         ),
                       ),
@@ -205,4 +207,78 @@ class _HairCutsState extends State<Services> {
     emailController.clear();
     commentController.clear();
   }
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content:  SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(child: Text("You are about to book ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),)),
+                    SizedBox(height: 20,),
+                    Text("${widget.value}"),
+                    SizedBox(height: 5,),
+                    Text("At ${time.hour}: ${time.minute}"),
+                    SizedBox(height: 5,),
+                    Text("On ${today.day}: ${today.month} : ${today.year}")
+                  ],
+                ),
+                Text('are you sure? ',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20.0,
+                  ),),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('yes',
+                style: TextStyle(fontSize: 20),
+              ),
+              onPressed: () async {
+                await FirebaseFirestore.instance.collection('Services').doc().set(
+                        {
+                          "service": widget.value,
+                          "price": ("£${widget.price}"),
+                          "date": today,
+                          "name": nameController.text,
+                          "comment": commentController.text,
+                          "time": ("${time.hour}: ${time.minute}"),
+                        }
+                    );
+                    print('things submitted');
+                clearText();
+
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) =>  allBooked()),
+                );
+                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                  content: Text('You have successfully booked a ${widget.value}'),
+
+                ));
+              },
+
+            ),
+            TextButton(
+              child: const Text('cancel',
+                style: TextStyle(fontSize: 20),
+              ),
+              onPressed: ()  {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
+
