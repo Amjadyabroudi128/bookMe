@@ -56,14 +56,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(height: 12,),
-                Text("cuts amd Trims ", style: TextStyle(color: Colors.grey, fontSize: 19),),
+                Text("cuts amd Trims ", style: TextStyle(color: Colors.grey, fontSize: 19,),),
                 Card(
                   child: Column(
                     children: [
                       Row(
                         children: [
                           Text("Haircuts"),
-                          Spacer(),
+                           Spacer(),
                           Text("£16"),
                           SizedBox(width: 12,),
                           Padding(

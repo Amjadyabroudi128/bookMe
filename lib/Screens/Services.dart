@@ -145,8 +145,10 @@ class _HairCutsState extends State<Services> {
 
                       ),
                     ),
+
                   ],
                 ),
+
               ),
               SizedBox(height: 25,),
               Card(
