@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:marquee/marquee.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -32,6 +33,20 @@ class _HomePageState extends State<HomePage> {
                 Image.asset("images/376.jpg", fit: BoxFit.cover, height: 280,width: MediaQuery.of(context).size.width,
                 ),
                 SizedBox(height: 18,),
+                Container(
+                  color: Colors.red.shade900,
+                  height: 60,
+                  child: Marquee(
+                    blankSpace: 10,
+                    // text speed
+                    // if we set velovit negative slide opposite direction.
+                    text: "Walk ins is available, but it's better to book prior to coming in ",
+                    style: const TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white ),
+                )
+                ),
                 Container(
                   padding: EdgeInsets.all(5),
                   alignment: Alignment.topLeft,
