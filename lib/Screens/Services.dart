@@ -31,6 +31,8 @@ class _HairCutsState extends State<Services> {
   TextEditingController emailController = TextEditingController();
   TextEditingController commentController = TextEditingController();
   final dataBase = FirebaseFirestore.instance;
+  final formKey = GlobalKey<FormState>(); //key for form
+
   TimeOfDay time = TimeOfDay(hour: 12, minute: 12);
   @override
   Widget build(BuildContext context) {
@@ -43,162 +45,160 @@ class _HairCutsState extends State<Services> {
           title: Text("book an Appointment", style: TextStyle(color: Colors.black),),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 35,),
-              Container(
-                child: TableCalendar(
-                  calendarStyle: CalendarStyle(
-                    selectedDecoration: BoxDecoration(
-                        color: Colors.teal,
-                        shape: BoxShape.circle
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                SizedBox(height: 35,),
+                Container(
+                  child: TableCalendar(
+                    calendarStyle: CalendarStyle(
+                      selectedDecoration: BoxDecoration(
+                          color: Colors.teal,
+                          shape: BoxShape.circle
+                      ),
+                    ),
+                    rowHeight: 35,
+                    headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
+                    availableGestures: AvailableGestures.all,
+                    selectedDayPredicate: (day) => isSameDay(day, today),
+                    focusedDay: today,
+                    firstDay: DateTime.now(),
+                    lastDay: DateTime.utc(2030, 3, 10),
+                    onDaySelected: _onDaySelected,
+                  ),
+                ),
+                Divider(thickness: 0.5, color: Colors.grey,),
+                SizedBox(height: 20,),
+                GestureDetector(
+                  onTap: () async {
+                    TimeOfDay? newTime = await showTimePicker(
+                        context: context,
+                        initialTime: time);
+                    if(newTime == null) return;
+                    setState(() => time = newTime);
+                  },
+                  child: Container(
+                    color: Colors.grey,
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Text("${time.hour}: ${time.minute}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                        Spacer(),
+                        Icon(Icons.access_time_outlined, size: 40,)
+                      ],
                     ),
                   ),
-                  rowHeight: 35,
-                  headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
-                  availableGestures: AvailableGestures.all,
-                  selectedDayPredicate: (day) => isSameDay(day, today),
-                  focusedDay: today,
-                  firstDay: DateTime.now(),
-                  lastDay: DateTime.utc(2030, 3, 10),
-                  onDaySelected: _onDaySelected,
                 ),
-              ),
-              Divider(thickness: 0.5, color: Colors.grey,),
-              SizedBox(height: 20,),
-              GestureDetector(
-                onTap: () async {
-                  TimeOfDay? newTime = await showTimePicker(
-                      context: context,
-                      initialTime: time);
-                  if(newTime == null) return;
-                  setState(() => time = newTime);
-                },
-                child: Container(
-                  color: Colors.grey,
-                  height: 50,
-                  width: MediaQuery.of(context).size.width,
+                Padding(
+                  padding: EdgeInsets.all(12),
                   child: Row(
-                    children: [
-                      Text("${time.hour}: ${time.minute}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-                      Spacer(),
-                      Icon(Icons.access_time_outlined, size: 40,)
+                    children: <Widget>[
+                       Flexible(
+                          child: TextFormField(
+                            controller: nameController,
+                            decoration:  InputDecoration(
+                                labelText: "Name",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)
+                              ),
+                            ),
+                            validator: (value){
+                              if(value!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(value)){
+                                //allow upper and lower case alphabets and space
+                                return "Enter a Name";
+                              }else{
+                                return null;
+                              }
+                            },
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                          ),
+                      ),
+                      SizedBox(width: 20,),
+                      Flexible(
+                        child:  TextFormField(
+                          controller: emailController,
+                          decoration:  InputDecoration(
+                              labelText: "email",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)
+                            ),
+                          ),
+                          validator: (value){
+                            if(value!.isEmpty || !RegExp(r'\S+@\S+\.\S+').hasMatch(value)){
+                              //allow upper and lower case alphabets and space
+                              return "Enter a Name";
+                            }else{
+                              return null;
+                            }
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  children: <Widget>[
-                     Flexible(
-                      child: TextField(
-                        controller: nameController,
-                        decoration:  InputDecoration(
-                            labelText: "Name",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
+                SizedBox(height: 20,),
+                Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(width: 20,),
+                      Flexible(
+                        child:  TextField(
+                          controller: commentController,
+                          decoration:  InputDecoration(
+                            labelText: "add comment",
+                            prefixIcon: Icon(Icons.comment, color: Colors.grey,),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12)
+                            ),
                           ),
-                        ),
-                        onChanged: (value ){
-                          nameController.text = value;
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 20,),
-                    Flexible(
-                      child:  TextField(
-                        controller: emailController,
-                        decoration:  InputDecoration(
-                            labelText: "email",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          ),
-                        ),
-                        onChanged: (value ){
-                          emailController.text = value;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20,),
-              Padding(
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(width: 20,),
-                    Flexible(
-                      child:  TextField(
-                        controller: commentController,
-                        decoration:  InputDecoration(
-                          labelText: "add comment",
-                          prefixIcon: Icon(Icons.comment, color: Colors.grey,),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
-                          ),
-                        ),
-                        onChanged: (value ){
-                          commentController.text = value;
-                        },
-
-                      ),
-                    ),
-
-                  ],
-                ),
-
-              ),
-              SizedBox(height: 25,),
-              Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Text("${widget.value}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                        Spacer(),
-                        Text("£${widget.price}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child:Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadiusDirectional.circular(30),
-                          color: Colors.teal,
-
-                        ),
-                        child: MaterialButton(
-                          child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
-                           onPressed: () async {
-                            await _showMyDialog();
-                            // await dataBase.collection("Services").doc().set(
-                            //   {
-                            //     "service": widget.value,
-                            //     "price": ("£${widget.price}"),
-                            //     "date": today,
-                            //     "name": nameController.text,
-                            //     "comment": commentController.text,
-                            //     "time": ("${time.hour}: ${time.minute}"),
-                            //   }
-                            // );
-                            // print('things submitted');
-                            // clearText();
-                            //
-                            // Navigator.push(
-                            //   context,
-                            //   CupertinoPageRoute(builder: (context) => const allBooked()),
-                            // );
+                          onChanged: (value ){
+                            commentController.text = value;
                           },
+
                         ),
                       ),
-                    ),
-                  ],
+
+                    ],
+                  ),
+
                 ),
-              )
-            ],
+                SizedBox(height: 25,),
+                Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Text("${widget.value}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                          Spacer(),
+                          Text("£${widget.price}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child:Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadiusDirectional.circular(30),
+                            color: Colors.teal,
+
+                          ),
+                          child: MaterialButton(
+                            child: Text("book", style: TextStyle(fontWeight: FontWeight.bold),),
+                             onPressed: () async {
+                              await _showMyDialog();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -243,29 +243,34 @@ class _HairCutsState extends State<Services> {
               child: const Text('yes',
                 style: TextStyle(fontSize: 20),
               ),
-              onPressed: () async {
-                await FirebaseFirestore.instance.collection('Services').doc().set(
-                        {
-                          "service": widget.value,
-                          "price": ("£${widget.price}"),
-                          "date": today,
-                          "name": nameController.text,
-                          "comment": commentController.text,
-                          "time": ("${time.hour}: ${time.minute}"),
-                        }
-                    );
-                    print('things submitted');
-                clearText();
+              onPressed: () {
+                if (formKey.currentState!.validate()){
+                   dataBase.collection("Services").doc().set(
+                      {
+                        "service": widget.value,
+                        "price": ("£${widget.price}"),
+                        "date": today,
+                        "name": nameController.text,
+                        "comment": commentController.text,
+                        "time": ("${time.hour}: ${time.minute}"),
+                      }
+                  );
+                  print('things submitted');
+                  clearText();
 
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) =>  allBooked()),
-                );
-                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                  content: Text('You have successfully booked a ${widget.value}'),
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => const allBooked()),
+                  );
+                   ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                     content: Text('You have successfully booked a ${widget.value}'),
 
-                ));
-              },
+                   ));
+                }
+                else (){
+                  return null;
+                };
+              }
 
             ),
             TextButton(
