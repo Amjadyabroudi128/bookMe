@@ -100,6 +100,10 @@ class _HairCutsState extends State<Services> {
                             controller: nameController,
                             decoration:  InputDecoration(
                                 labelText: "Name",
+                              hintText: "Enter a name",
+                              prefixIcon: Icon(
+                                Icons.person
+                              ),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12)
                               ),
@@ -120,7 +124,11 @@ class _HairCutsState extends State<Services> {
                         child:  TextFormField(
                           controller: emailController,
                           decoration:  InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.email
+                            ),
                               labelText: "email",
+                              hintText: "e.g John@Gmail.com",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12)
                             ),
@@ -128,7 +136,7 @@ class _HairCutsState extends State<Services> {
                           validator: (value){
                             if(value!.isEmpty || !RegExp(r'\S+@\S+\.\S+').hasMatch(value)){
                               //allow upper and lower case alphabets and space
-                              return "Enter a Name";
+                              return "type an email";
                             }else{
                               return null;
                             }
@@ -139,32 +147,30 @@ class _HairCutsState extends State<Services> {
                     ],
                   ),
                 ),
+
                 SizedBox(height: 20,),
                 Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(width: 20,),
-                      Flexible(
-                        child:  TextField(
-                          controller: commentController,
-                          decoration:  InputDecoration(
-                            labelText: "add comment",
-                            prefixIcon: Icon(Icons.comment, color: Colors.grey,),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12)
-                            ),
+                  padding: EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Comment (optional)" , style: TextStyle(color: Colors.grey.shade700),),
+                      SizedBox(height: 10,),
+                      TextField(
+                        controller: commentController,
+                        decoration:  InputDecoration(
+                          prefixIcon: Icon(Icons.comment, color: Colors.grey,),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)
                           ),
-                          onChanged: (value ){
-                            commentController.text = value;
-                          },
-
                         ),
-                      ),
+                        onChanged: (value ){
+                          commentController.text = value;
+                        },
 
+                      ),
                     ],
                   ),
-
                 ),
                 SizedBox(height: 25,),
                 Card(
@@ -267,9 +273,9 @@ class _HairCutsState extends State<Services> {
 
                    ));
                 }
-                else (){
+                else {
                   return null;
-                };
+                }
               }
 
             ),
