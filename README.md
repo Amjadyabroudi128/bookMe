@@ -1,1 +1,1 @@
-this is a simple barber app i am trying to do 
+this is a barber booking app i have been working on recently
