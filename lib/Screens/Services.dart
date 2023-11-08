@@ -70,24 +70,27 @@ class _HairCutsState extends State<Services> {
                 ),
                 Divider(thickness: 0.5, color: Colors.grey,),
                 SizedBox(height: 20,),
-                GestureDetector(
-                  onTap: () async {
-                    TimeOfDay? newTime = await showTimePicker(
-                        context: context,
-                        initialTime: time);
-                    if(newTime == null) return;
-                    setState(() => time = newTime);
-                  },
-                  child: Container(
-                    color: Colors.grey,
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Text("${time.hour}: ${time.minute}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-                        Spacer(),
-                        Icon(Icons.access_time_outlined, size: 40,)
-                      ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () async {
+                      TimeOfDay? newTime = await showTimePicker(
+                          context: context,
+                          initialTime: time);
+                      if(newTime == null) return;
+                      setState(() => time = newTime);
+                    },
+                    child: Container(
+                      color: Colors.grey,
+                      height: 50,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Text("${time.hour}: ${time.minute}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                          Spacer(),
+                          Icon(Icons.access_time_outlined, size: 40,)
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -274,7 +277,9 @@ class _HairCutsState extends State<Services> {
                    ));
                 }
                 else {
-                  return null;
+                 ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                    content: Text('please fill the required fields'),
+                  ));
                 }
               }
 
