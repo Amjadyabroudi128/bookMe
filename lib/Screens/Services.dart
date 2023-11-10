@@ -7,10 +7,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 class Services extends StatefulWidget {
-final String value;
-final int price;
+var  value;
+var price;
 
- const Services({
+  Services({
    Key? key,
  required this.value, required this.price,
  }) : super (key: key);
@@ -86,9 +86,15 @@ class _HairCutsState extends State<Services> {
                       width: MediaQuery.of(context).size.width,
                       child: Row(
                         children: [
-                          Text("${time.hour}: ${time.minute}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("${time.hour}: ${time.minute}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                          ),
                           Spacer(),
-                          Icon(Icons.access_time_outlined, size: 40,)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(Icons.access_time_outlined, size: 40,),
+                          )
                         ],
                       ),
                     ),
@@ -102,13 +108,18 @@ class _HairCutsState extends State<Services> {
                           child: TextFormField(
                             controller: nameController,
                             decoration:  InputDecoration(
-                                labelText: "Name",
+                                labelText: "Name *", labelStyle: TextStyle(color: Colors.black),
                               hintText: "Enter a name",
                               prefixIcon: Icon(
-                                Icons.person
+                                Icons.person,
+                                color: Colors.grey,
                               ),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12)
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                             validator: (value){
@@ -128,12 +139,17 @@ class _HairCutsState extends State<Services> {
                           controller: emailController,
                           decoration:  InputDecoration(
                             prefixIcon: Icon(
-                              Icons.email
+                              Icons.email,
+                              color: Colors.grey,
                             ),
-                              labelText: "email",
+                              labelText: "email *", labelStyle: TextStyle(color: Colors.black),
                               hintText: "e.g John@Gmail.com",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                           validator: (value){
@@ -163,8 +179,12 @@ class _HairCutsState extends State<Services> {
                         controller: commentController,
                         decoration:  InputDecoration(
                           prefixIcon: Icon(Icons.comment, color: Colors.grey,),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         onChanged: (value ){
@@ -172,6 +192,7 @@ class _HairCutsState extends State<Services> {
                         },
 
                       ),
+
                     ],
                   ),
                 ),
