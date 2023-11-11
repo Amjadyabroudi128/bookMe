@@ -1,4 +1,4 @@
-## barber booking app using flutter + firebase ##
+barber booking app using Flutter + Firebase 
 ### description ##
 hello people, this is an app I have been working on recently for a friend of mine to practice and improve myself and my skills 
 my friend told me about the features that he wants in the app, I have done most of what he has asked me to do which was a bit challenging 
