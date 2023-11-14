@@ -269,6 +269,15 @@ class _HairCutsState extends State<Services> {
             ),
           ),
           actions: <Widget>[
+    
+            TextButton(
+              child: const Text('cancel',
+                style: TextStyle(fontSize: 20),
+              ),
+              onPressed: ()  {
+                Navigator.pop(context);
+              },
+            ),
             TextButton(
               child: const Text('yes',
                 style: TextStyle(fontSize: 20),
@@ -304,14 +313,6 @@ class _HairCutsState extends State<Services> {
                 }
               }
 
-            ),
-            TextButton(
-              child: const Text('cancel',
-                style: TextStyle(fontSize: 20),
-              ),
-              onPressed: ()  {
-                Navigator.pop(context);
-              },
             ),
           ],
         );
