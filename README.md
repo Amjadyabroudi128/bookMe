@@ -3,7 +3,8 @@ barber booking app using Flutter + Firebase
 hello people, this is an app I have been working on recently for a friend of mine to practice and improve myself and my skills 
 my friend told me about the features that he wants in the app, I have done most of what he has asked me to do which was a bit challenging 
 I have done it using Flutter and Firebase
-there us a rkease tag if you want to try the app out 
+
+there is a release tag if you want to try the app out 
 here are screenshots 
 ## splash screen ## 
 ![Screenshot 2023-11-11 163356](https://github.com/Amjadyabroudi128/bookMe/assets/61939508/5247ac0f-b140-4bd9-9a5b-ee5111347d4e)
